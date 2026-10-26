@@ -106,15 +106,20 @@ void loop()
         //   }
         //   break;
     case STATE_PATROL: // ходьба
-        static bool stepDone = false;
+        // static bool stepDone = false;
         if (sonarDistanceCm > 20)
         {
-            stepDone = movement();
+            // stepDone = movement(); // временно отключено за ненадобностью
+            movement();
         }
         else
         {
             set_default_pos();
         }
+        break;
+
+    default:
+        break;
     }
 
 #if DEBUG_MODE

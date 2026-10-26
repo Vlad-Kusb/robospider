@@ -5,7 +5,7 @@ unsigned long sonarTimer = 0; // таймер
 
 int getSonarDistance() // получение дистанции с датчика
 {
-    int duration, cm;           // назначаем переменную "cm" и "duration" для показаний датчика
+    unsigned int duration, cm;           // назначаем переменную "cm" и "duration" для показаний датчика
     digitalWrite(HC_TRIG, LOW); // изначально датчик не посылает сигнал
     delayMicroseconds(2);       // ставим задержку в 2 ммикросекунд
 
