@@ -1,5 +1,5 @@
 #pragma once
-#include <config.h>
+#include "config.h"
 
 unsigned long sonarTimer = 0; // таймер
 
