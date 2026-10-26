@@ -1,7 +1,7 @@
 #pragma once
 #include <config.h>
 
-unsigned long sonarTimer = 0;    // таймер
+unsigned long sonarTimer = 0; // таймер
 
 int getSonarDistance() // получение дистанции с датчика
 {

@@ -12,11 +12,6 @@ void setServoPos(byte servoNum, int pos);
 int convertAngle(byte servoNumber, int angle);
 bool tickAllServos();
 
-
-
-
-
-
 void init_servos() // функция инициализации
 {
     for (byte i = 0; i < SERVOS_COUNT / 2; i++)

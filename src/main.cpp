@@ -13,7 +13,7 @@
 #include "led.h"
 #include "gaits.h"
 
-bool servosMoved; // флаг определения достижения целевой позиции всеми сервами
+bool servosMoved;             // флаг определения достижения целевой позиции всеми сервами
 unsigned int sonarDistanceCm; // расстояние с датчика в см
 // unsigned int sonarDistanceCmFilteredSmooth;
 
