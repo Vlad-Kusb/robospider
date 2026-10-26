@@ -6,63 +6,19 @@
 #define DEBUG_MODE false     // флаг дебаг режима
 #define DEBUG_INF_MSGS false // флаг регулярные сообщения дебага в дебаг режиме
 
-constexpr uint8_t HC_TRIG = 11;     // триггер пин
-constexpr uint8_t HC_ECHO = 12;     // эхо пин
-constexpr uint8_t SERVOS_COUNT = 8; // количество сервоприводов
-
-constexpr uint8_t KNEE_START_POS = 125;        // начальная позиция сервоприводов для коленей
-constexpr uint8_t BEDR_START_POS = 40;         // начальная позиция для бедер
-constexpr bool KNEE_AUTODETACH = false;        // автоотключение серв коленей при достижении цели
-constexpr bool BEDR_AUTODETACH = true;         // автооткл бедер
-constexpr uint8_t BEDR_MIN_POS = 0;            // минимальная позиция для бедер
-constexpr uint8_t BEDR_MAX_POS = 70;           // максимальная позиция бедер
-constexpr uint8_t KNEE_MIN_POS = 0;            // минимум коленей
-constexpr uint8_t KNEE_MAX_POS = 140;          // максимум коленей
-constexpr uint8_t SERVO_DEFAULT_SPEED = 250;   // град/сек
-constexpr float SERVO_DEFAULT_ACCEL = 2.1f;    // ускорение
-constexpr uint8_t LED = 13;                    // пин светодиода
-constexpr bool LED_STAT = false;               // светодиод по умолчанию горит всегда и меняет состояние на время нажатия кнопки
-constexpr uint8_t SONAR_MAX_DISTANCE_CM = 500; // ограничение максимального измерения расстояния
-constexpr uint8_t BUTTON_PIN = 10;             // пин кнопки, выбор режимов должен быть по ней, сколько раз нажата -- такой режим и выбран, повторное одинарное нажатие в любом режиме просто вернет робота в стартовую позицию и будет ждать указаний
-constexpr uint8_t BTN_DEB = 100;               // дребезг кнопки
-
-ServoSmooth servos[SERVOS_COUNT];                                                   // сервоприводы
-const byte servoPins[SERVOS_COUNT] = {4, 9, 5, 7, 8, 3, 6, 2};                      // пины сервоприводов подключенные против часовой стрелки, начиная с правого переднего колена, заканчивая правым передним бедром (По этому же списку нумерация)
-const int8_t servoAngleCorrections[SERVOS_COUNT] = {15, -15, -5, -15, -4, 0, 6, 0}; // углы коррекции для нулевого положения
-
-unsigned long servoTimer = 0;    // Глобальный Серво таймер для ручных тиков
-unsigned long debugMsgTimer = 0; // таймер
-unsigned long sonarTimer = 0;    // таймер
+#include "config.h"
+#include "legs.h"
+#include "sonar.h"
+#include "button.h"
+#include "led.h"
+#include "gaits.h"
 
 bool servosMoved; // флаг определения достижения целевой позиции всеми сервами
-
 unsigned int sonarDistanceCm; // расстояние с датчика в см
 // unsigned int sonarDistanceCmFilteredSmooth;
 
-enum SpiderState
-{                      // объект состояний робота
-    STATE_START_POS,   // 0 Стартовая позиция
-    STATE_DANCE,       // 1 танец
-    STATE_PATROL,      // 2 патруль
-    STATE_SLEEP,       // 3 спать
-    STATE_CHANGE_STATE // 4 изменение состояния
-};
-
 SpiderState currentState = STATE_START_POS; // задаем состояние в момент запуска
 SpiderState prevState = STATE_START_POS;    // предыдущее состояние в момент запуска
-
-// put function declarations here:
-void led_blink(uint8_t count);             // вспомогательная функция, которая моргает светодиодом заданное число раз
-void init_servos();                            // функция инициализации
-int cycleNum(int num, bool isBedr = true);     // вспомогательная функция на случай переполнения в циклах ходьбы
-bool movement(byte phase = 0);                 // ходьба 0 1 2 (перед лево право), основная функция для ходьбы
-int getSonarDistance();                        // получение дистанции с датчика
-SpiderState button_handler();                  // обработчик кнопки
-void dancing();                                // функция танца
-void set_default_pos();                        // начальная позиция серв
-void setServoPos(byte servoNum, int pos);      // функция для задания положения серво. (НОМЕР серво, угол в формате 0-180) номер в соответствии с массивом servoPins
-int convertAngle(byte servoNumber, int angle); // Функция для перобразования углов четных-нечетных лап в формат 0-180 и коррекция углов ()
-bool tickAllServos();                          // функция для двига всех серв разом, возвращает true, если все сервы на целевых позициях!
 
 void setup()
 {

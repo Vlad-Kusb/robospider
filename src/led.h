@@ -1,3 +1,4 @@
+#pragma once
 #include <config.h>
 
 void led_blink(uint8_t count = 5) // вспомогательная функция, которая моргает светодиодом заданное число раз
