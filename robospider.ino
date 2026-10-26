@@ -274,7 +274,7 @@ void loop() // постоянный цикл
 
     currentState = button_handler(); // обновляем состояние через обработчик кнопки
 
-    if (prevState != currentState & currentState != STATE_CHANGE_STATE) // если состояние поменялось, то сначала занимаем начальную позицию, затем моргаем
+    if (prevState != currentState && currentState != STATE_CHANGE_STATE) // если состояние поменялось, то сначала занимаем начальную позицию, затем моргаем
     {
         set_default_pos();
         led_blink(currentState); // моргаем по номеру состояния
@@ -325,7 +325,7 @@ void loop() // постоянный цикл
         }
     }
 
-    if (DEBUG_MODE & millis() - debugMsgTimer >= 1000 & DEBUG_INF_MSGS) // регулярное сообщение дебага
+    if (DEBUG_MODE && millis() - debugMsgTimer >= 1000 && DEBUG_INF_MSGS) // регулярное сообщение дебага
     {
         static int msgCounter = 0;
         Serial.print("Sonar distance: ");
