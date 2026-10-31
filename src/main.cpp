@@ -17,8 +17,8 @@ bool servosMoved;             // флаг определения достиже�
 unsigned int sonarDistanceCm; // расстояние с датчика в см
 // unsigned int sonarDistanceCmFilteredSmooth;
 
-SpiderState currentState = STATE_START_POS; // задаем состояние в момент запуска
-SpiderState prevState = STATE_START_POS;    // предыдущее состояние в момент запуска
+SpiderState currentState = STATE_START_POS; // задаем состояние
+SpiderState prevState = STATE_START_POS;    // предыдущее состояние робота
 
 void setup()
 {
